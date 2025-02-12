@@ -1,0 +1,113 @@
+[
+  {
+    "id": "q1",
+    "question": "How often do you use public WiFi networks?",
+    "options": [
+      {"text": "Never", "value": 3},
+      {"text": "Rarely", "value": 2},
+      {"text": "Often", "value": 1},
+      {"text": "Very frequently", "value": 0}
+    ],
+    "answer": null
+  },
+  {
+    "id": "q2",
+    "question": "Do you regularly change your passwords?",
+    "options": [
+      {"text": "Every 1-3 months", "value": 3},
+      {"text": "Every 4-6 months", "value": 2},
+      {"text": "Once a year", "value": 1},
+      {"text": "Rarely or never", "value": 0}
+    ],
+    "answer": null
+  },
+  {
+    "id": "q3",
+    "question": "Do you check app permissions before installation?",
+    "options": [
+      {"text": "Always", "value": 3},
+      {"text": "Sometimes", "value": 2},
+      {"text": "Rarely", "value": 1},
+      {"text": "Never", "value": 0}
+    ],
+    "answer": null
+  },
+  {
+    "id": "q4",
+    "question": "Do you use two-factor authentication?",
+    "options": [
+      {"text": "For all accounts", "value": 3},
+      {"text": "For important accounts only", "value": 2},
+      {"text": "For few accounts", "value": 1},
+      {"text": "Never", "value": 0}
+    ],
+    "answer": null
+  },
+  {
+    "id": "q5",
+    "question": "How do you handle app location permissions?",
+    "options": [
+      {"text": "Only while using the app", "value": 3},
+      {"text": "Allow if needed", "value": 2},
+      {"text": "Always allow", "value": 1},
+      {"text": "Don't care", "value": 0}
+    ],
+    "answer": null
+  },
+  {
+    "id": "q6",
+    "question": "How often do you check and clean unused apps?",
+    "options": [
+      {"text": "Monthly", "value": 3},
+      {"text": "Every few months", "value": 2},
+      {"text": "Yearly", "value": 1},
+      {"text": "Never", "value": 0}
+    ],
+    "answer": null
+  },
+  {
+    "id": "q7",
+    "question": "Do you read privacy policies?",
+    "options": [
+      {"text": "Always thoroughly", "value": 3},
+      {"text": "Skim through", "value": 2},
+      {"text": "Rarely", "value": 1},
+      {"text": "Never", "value": 0}
+    ],
+    "answer": null
+  },
+  {
+    "id": "q8",
+    "question": "Have you experienced data breach before?",
+    "options": [
+      {"text": "Never", "value": 3},
+      {"text": "Not sure", "value": 2},
+      {"text": "Once", "value": 1},
+      {"text": "Multiple times", "value": 0}
+    ],
+    "answer": null
+  },
+  {
+    "id": "q9",
+    "question": "Do you backup important data?",
+    "options": [
+      {"text": "Regularly scheduled", "value": 3},
+      {"text": "Sometimes", "value": 2},
+      {"text": "Rarely", "value": 1},
+      {"text": "Never", "value": 0}
+    ],
+    "answer": null
+  },
+  {
+    "id": "q10",
+    "question": "How do you handle suspicious links?",
+    "options": [
+      {"text": "Never click", "value": 3},
+      {"text": "Check before clicking", "value": 2},
+      {"text": "Click if interesting", "value": 1},
+      {"text": "Click without thinking", "value": 0}
+    ],
+    "answer": null
+  }
+]
+
