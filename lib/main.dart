@@ -1,12 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:lucide_icons/lucide_icons.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'screens/home_page.dart';
+import 'package:privacy_insight/database/database_helper.dart';
 
-void main() {
-  runApp(const PrivacyInsightApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  int? userId = await _getOrCreateUser();
+  runApp(PrivacyInsightApp(userId: userId));
 }
 
 class PrivacyInsightApp extends StatelessWidget {
-  const PrivacyInsightApp({super.key});
+  final int userId;
+
+  const PrivacyInsightApp({Key? key, required this.userId}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -14,191 +20,27 @@ class PrivacyInsightApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primaryColor: Colors.green.shade700,
-        scaffoldBackgroundColor: Colors.grey.shade100, // Subtle contrast
+        scaffoldBackgroundColor: Colors.grey.shade100,
       ),
-      home: const HomePage(),
+      home: HomePage(userId: userId),
     );
   }
 }
 
-class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+/// Retrieves the user ID from shared preferences or creates a new user if not found.
+Future<int> _getOrCreateUser() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  int? userId = prefs.getInt('user_id');
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Top Bar (App Name + Account Icon)
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Text(
-                      "PrivacyInsight",
-                      style: TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.green,
-                      ),
-                    ),
-                    Container(
-                      width: 40,
-                      height: 40,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(8),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.1),
-                            blurRadius: 4,
-                            spreadRadius: 2,
-                          ),
-                        ],
-                      ),
-                      child: const Icon(
-                        Icons.person,
-                        color: Colors.green,
-                      ),
-                    ),
-                  ],
-                ),
-
-                const SizedBox(height: 40),
-
-                // Privacy Score Circle
-                Center(
-                  child: Container(
-                    width: 160,
-                    height: 160,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: Colors.white,
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.1),
-                          blurRadius: 6,
-                          spreadRadius: 3,
-                        ),
-                      ],
-                    ),
-                    child: Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Text(
-                            "85%", // Dummy score
-                            style: TextStyle(
-                              fontSize: 32,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.green,
-                            ),
-                          ),
-                          Text(
-                            "Privacy Score",
-                            style: TextStyle(
-                              fontSize: 14,
-                              color: Colors.grey.shade700,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-
-                const SizedBox(height: 25),
-
-                // Take Survey Button
-                Center(
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.green.shade700,
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 30, vertical: 12),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                    ),
-                    onPressed: () {
-                      // Navigate to survey page
-                    },
-                    child: const Text(
-                      "Take Survey",
-                      style: TextStyle(color: Colors.white, fontSize: 16),
-                    ),
-                  ),
-                ),
-
-                const SizedBox(height: 35),
-
-                // Analyzer Tools Label
-                const Text(
-                  "Analyzer Tools",
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.green,
-                  ),
-                ),
-
-                const SizedBox(height: 12),
-
-                // 2x2 Grid for Analyzer Tools
-                GridView.count(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  crossAxisCount: 2,
-                  crossAxisSpacing: 16,
-                  mainAxisSpacing: 16,
-                  childAspectRatio: 1.2,
-                  children: [
-                    _buildToolCard(Icons.contacts, "Contacts"),
-                    _buildToolCard(LucideIcons.shieldAlert, "App Author"),
-                    _buildToolCard(Icons.storage, "Storage"),
-                    _buildToolCard(Icons.location_on, "Location"),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
+  if (userId == null) {
+    DatabaseHelper dbHelper = DatabaseHelper();
+    // Inserts a default guest user if no user exists
+    userId = await dbHelper.insertUser({
+      'name': 'Guest',
+      'email': 'guest@example.com',
+    });
+    await prefs.setInt('user_id', userId); // Saves user ID for future sessions
   }
 
-  Widget _buildToolCard(IconData icon, String label) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.08),
-            blurRadius: 6,
-            spreadRadius: 2,
-          ),
-        ],
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(icon, size: 40, color: Colors.green.shade700),
-          const SizedBox(height: 8),
-          Text(
-            label,
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w500,
-              color: Colors.green.shade900,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
+  return userId;
 }
